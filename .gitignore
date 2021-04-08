@@ -3,6 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+./LAB2/bin
+./LAB2/obj
 # User-specific files
 *.rsuser
 *.suo
