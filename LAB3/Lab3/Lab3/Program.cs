@@ -3,78 +3,36 @@ using System.Collections.Generic;
 
 namespace Lab3
 {
-    public class Shape
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Width { get; set; }
-
-        public int Height { get; set; }
-
-        public virtual void Draw()
-        {
-            for (int i = 0; i < Y + Height; i++)
-            {
-                if (i < Y)
-                {
-                    Console.WriteLine();
-                    continue;
-                }
-
-                for (int j = 0; j < X + Width; j++)
-                {
-                    if (j < X)
-                    {
-                        Console.Write(" ");
-                        continue;
-                    }
-
-                    Console.Write("*");
-
-                }
-
-                Console.WriteLine();
-
-
-            }
-
-
-
-        }
-
-    }
-
-
-
-
-
-
     class Program
     {
+        
         static void Main(string[] args)
         {
+           
             List<Shape> list = new List<Shape>();
 
-            list.Add(new Shape()
-            {
-                X = 3,
-                Y = 4,
-                Height = 2,
-                 Width = 6
-
-            }
-            );
-
-            //list.Add(new Rectangle());
-
+            list.Add(new Triangle(5f, 4f, 9f, 10f));
+            list.Add(new Rectangle(5f,5f,4f,8f));
+            list.Add(new Circle());
 
             foreach (var item in list)
             {
                 item.Draw();
             }
+            
+            Console.WriteLine();
+            Console.WriteLine();
+            Nauczyciel Nauczyciel1 = new Nauczyciel();
+            Nauczyciel1.SetFirstName("Sławomir");
+            Nauczyciel1.SetLastName("Kowalski");
+            Nauczyciel1.TytulNaukowy = "Doktor";
+            Nauczyciel1.Szkola = "Sp 1 Rzeszów";
+            Nauczyciel1.PodwladniUczniowie.Add(new Uczen("Ewa", "Płaczka", "14220364244", "SP 1 Rzeszów"));
+            Nauczyciel1.PodwladniUczniowie.Add(new Uczen("Marcin", "Tibijczyk", "10250831112", "SP 1 Rzeszów", true));
+            Nauczyciel1.PodwladniUczniowie.Add(new Uczen("Agnieszka", "Niemieszka", "06220329969", "SP 1 Rzeszów", false));
+            Nauczyciel1.PodwladniUczniowie.Add(new Uczen("Grzegorz", "Floryda", "07250832137", "SP 1 Rzeszów", true));
 
-
-            Console.ReadLine();
+            Nauczyciel1.WhichStudentCanGoHomeAlone(DateTime.Now);
         }
     }
 }
