@@ -73,7 +73,7 @@ namespace Lab3
         public const string MALE    = "mężczyzna"; 
         public const string FEMALE  = "kobieta";
 
-        string Imie, Nazwisko, Pesel;
+        protected string Imie, Nazwisko, Pesel;
 
         public void SetFirstName(string imie)
         {
@@ -90,23 +90,21 @@ namespace Lab3
             this.Pesel = pesel;
         }
 
-        public int GetAge()
+        public int GetAge(DateTime dateToCheck)
         {
-            return new DateTime().Year - this.GetYearOfBirth();
+            return dateToCheck.Year - this.GetYearOfBirth();
         }
 
         public string GetGender()
         {
-            return Int32.Parse(this.Pesel[9].ToString()) % 2 == 0 
-                ? Osoba.FEMALE 
-                : Osoba.MALE;
+            return Int32.Parse(this.Pesel[9].ToString()) % 2 == 0 ? Osoba.FEMALE : Osoba.MALE;
         }
 
-        public virtual void GetEducationInfo() { }
-        public virtual void GetFullName() { }
-        public virtual void CanGoAloneToHome() { }
+        public virtual string GetEducationInfo() { return "Szkoła ukończona"; }
+        public virtual string GetFullName() { return Imie; }
+        public virtual bool CanGoAloneToHome(DateTime dateToCheck) { return true; }
 
-        protected int GetYearOfBirth()
+        public int GetYearOfBirth()
         {
             int month = Int32.Parse(this.Pesel.Substring(2, 2));
             int baseYear;
@@ -122,11 +120,18 @@ namespace Lab3
         }
     }
 
-    public class Uczen: Osoba
+    public class Uczen : Osoba
     {
-        string Szkola { get; set; }
-        bool MozeSamWracacDoDomu { get; set; }
+        public string Szkola { get; set; }
+        public bool MozeSamWracacDoDomu { get; set; }
 
+        public Uczen(string imie, string nazwisko, string szkola, string pesel)
+        {
+            Imie = imie;
+            Nazwisko = nazwisko;
+            Szkola = szkola;
+            Pesel = pesel;
+        }
         public void SetSchool(string szkola)
         {
             Szkola = szkola;
@@ -135,6 +140,50 @@ namespace Lab3
         public void ChangeSchool(string szkola)
         {
             Szkola = szkola;
+        }
+
+        public void SetCanGoHomeAlone(bool permission)
+        {
+            MozeSamWracacDoDomu = permission;
+        }
+
+        public override string GetEducationInfo()
+        {
+            return Szkola;
+        }
+
+        public override string GetFullName()
+        {
+            return Imie + ' ' + Nazwisko;
+        }
+
+        public override bool CanGoAloneToHome(DateTime dateToCheck)
+        {
+            return MozeSamWracacDoDomu || this.GetAge(dateToCheck) >= 12;
+        }
+    }
+
+    public class Nauczyciel: Uczen
+    {
+        public string TytulNaukowy { get; set; }
+        public List<Uczen> PodwladniUczniowie;
+
+        public Nauczyciel(string imie, string nazwisko, string szkola, string pesel, string tytul)
+            : base(imie, nazwisko, szkola, pesel)
+        {
+            TytulNaukowy = tytul;
+            PodwladniUczniowie = new List<Uczen>();
+        }
+
+        public void WhichStudendCanGoHomeAlone(DateTime dateToCheck)
+        {
+            foreach(Uczen u in PodwladniUczniowie)
+            {
+                if (u.CanGoAloneToHome(dateToCheck))
+                {
+                    Console.WriteLine(u.GetFullName());
+                }
+            }
         }
     }
 
@@ -184,6 +233,18 @@ namespace Lab3
             {
                 item.Draw();
             }
+
+
+            Nauczyciel nauczyciel = new Nauczyciel("Jan", "Kowalski", "Szkoła", "85100719933", "mgr");
+            nauczyciel.PodwladniUczniowie.Add(new Uczen("Andrzej", "Kowalski", "Szkoła", "02210181752"));
+            nauczyciel.PodwladniUczniowie.Add(new Uczen("Piotr", "Kowalski", "Szkoła", "10210181752"));
+            nauczyciel.PodwladniUczniowie.Add(new Uczen("Franek", "Kowalski", "Szkoła", "11210181752"));
+            nauczyciel.PodwladniUczniowie.Add(new Uczen("Kamil", "Kowalski", "Szkoła", "06210181752"));
+
+            Console.WriteLine(nauczyciel.GetEducationInfo() + " Dnia:" + DateTime.Now);
+            Console.WriteLine(nauczyciel.TytulNaukowy + " " + nauczyciel.GetFullName());
+            Console.WriteLine("Lista studentów:");
+            nauczyciel.WhichStudendCanGoHomeAlone(DateTime.Now);
         }
     }
 }
