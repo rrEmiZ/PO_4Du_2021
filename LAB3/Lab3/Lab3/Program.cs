@@ -8,7 +8,6 @@ namespace Lab3
         public int X { get; set; }
         public int Y { get; set; }
         public int Width { get; set; }
-
         public int Height { get; set; }
 
         public virtual void Draw()
@@ -35,46 +34,45 @@ namespace Lab3
 
                 Console.WriteLine();
 
-
             }
+        }
+    }
 
 
+    public class Rectangle : Shape
+    {
+        public override void Draw() {
 
+            Console.WriteLine("Rectangle");
         }
 
     }
 
+    public class Triangle : Shape
+    {
+        public override void Draw()
+        {
 
+            Console.WriteLine("Triangle");
+        }
 
+    }
 
+    public class Circle : Shape
+    {
+        public override void Draw()
+        {
 
+            Console.WriteLine("Triangle");
+        }
+
+    }
 
     class Program
     {
         static void Main(string[] args)
         {
-            List<Shape> list = new List<Shape>();
-
-            list.Add(new Shape()
-            {
-                X = 3,
-                Y = 4,
-                Height = 2,
-                 Width = 6
-
-            }
-            );
-
-            //list.Add(new Rectangle());
-
-
-            foreach (var item in list)
-            {
-                item.Draw();
-            }
-
-
-            Console.ReadLine();
+           
         }
     }
 }
