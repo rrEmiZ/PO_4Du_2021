@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Lab3;
 
 namespace Lab3
 {
@@ -13,39 +14,40 @@ namespace Lab3
 
         public virtual void Draw()
         {
-            for (int i = 0; i < Y + Height; i++)
-            {
-                if (i < Y)
-                {
-                    Console.WriteLine();
-                    continue;
-                }
 
-                for (int j = 0; j < X + Width; j++)
-                {
-                    if (j < X)
-                    {
-                        Console.Write(" ");
-                        continue;
-                    }
-
-                    Console.Write("*");
-
-                }
-
-                Console.WriteLine();
-
-
-            }
-
-
+            Console.WriteLine("Rysuje ksztalt");
 
         }
-
     }
 
 
+    public class Rectangle : Shape
+    {
+        public override void Draw()
+        {
 
+            Console.WriteLine("Rysuje prostokat");
+
+        }
+    }
+
+    public class Triangle : Shape
+    {
+        public override void Draw()
+        {
+
+            Console.WriteLine("Rysuje Trójkat");
+        }
+    }
+
+    public class Circle : Shape
+    {
+        public override void Draw()
+        {
+
+            Console.WriteLine("Rysuje Trójkat");
+        }
+    }
 
 
 
@@ -60,12 +62,38 @@ namespace Lab3
                 X = 3,
                 Y = 4,
                 Height = 2,
-                 Width = 6
+                Width = 6
 
             }
             );
 
-            //list.Add(new Rectangle());
+            list.Add(new Rectangle()
+            {
+                X = 2,
+                Y = 5,
+                Height = 3,
+                Width = 3
+            }
+            );
+
+            list.Add(new Triangle()
+            {
+                X = 2,
+                Y = 5,
+                Height = 3,
+                Width = 3
+            }
+            );
+
+            list.Add(new Circle()
+            {
+                X = 2,
+                Y = 5,
+                Height = 3,
+                Width = 3
+            }
+            );
+
 
 
             foreach (var item in list)
@@ -77,4 +105,5 @@ namespace Lab3
             Console.ReadLine();
         }
     }
+
 }
