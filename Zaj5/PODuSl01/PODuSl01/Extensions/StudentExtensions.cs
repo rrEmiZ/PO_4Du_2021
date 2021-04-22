@@ -9,7 +9,7 @@ namespace PODuSl01.Extensions
     {
         public static string WypiszPelnaNazweIUczelnie(this StudentWSIiZ s)
         {
-            var str = $"{s.FirstName} {s.LastName} - {s.Semestr}{s.Kierunek} {s.Rok} {s.Uczelnia}\n";
+            var str = $"{s.FirstName} {s.LastName} - {s.Semestr}{s.Kierunek} {s.Rok} {s.Uczelnia}";
             Console.WriteLine(str);
             return str;
         }

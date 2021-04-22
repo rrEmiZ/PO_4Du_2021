@@ -6,7 +6,6 @@ using PODuSl01.Extensions;
 
 namespace PODuSl01
 {
- 
     class Program
     {
         static void Main()
@@ -76,12 +75,7 @@ namespace PODuSl01
             {
                 stud.WypiszPelnaNazweIUczelnie();
             }
-
             Console.ReadLine();
-
         }
-
-
-
     }
 }

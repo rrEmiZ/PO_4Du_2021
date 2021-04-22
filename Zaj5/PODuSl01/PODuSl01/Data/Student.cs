@@ -11,7 +11,7 @@ namespace PODuSl01.Data
         public string Kierunek { get; set; }
         public int Rok { get; set; }
         public int Semestr { get; set; }
-        public string WypiszPelnaNazweIUczelnie()
+        string WypiszPelnaNazweIUczelnie()
         {
             var str = $"{FirstName} {LastName} - {Semestr}{Kierunek} {Rok} {Uczelnia}";
             Console.WriteLine(str);
