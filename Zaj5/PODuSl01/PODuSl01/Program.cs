@@ -34,7 +34,39 @@ namespace PODuSl01
                 LastName = "Kowalskyj"
             });
 
-            list.WypiszOsoby();
+            var list1 = new List<IStudent>();
+
+            list1.Add(new StudentWSIIZ() {
+                FirstName = "Jan",
+                LastName = "Matej",
+                Uczelnia = "WSIIZ",
+                Kierunek = "IID-P-Du",
+                Rok = "2018",
+                Semestr = "4"
+            });
+
+            list1.Add(new StudentWSIIZ()
+            {
+                FirstName = "Michał",
+                LastName = "Jankowski",
+                Uczelnia = "WSIIZ",
+                Kierunek = "IID-P-Du",
+                Rok = "2018",
+                Semestr = "4"
+            });
+
+            list1.Add(new StudentWSIIZ()
+            {
+                FirstName = "Andrzej",
+                LastName = "Zaucha",
+                Uczelnia = "WSIIZ",
+                Kierunek = "IID-P-Du",
+                Rok = "2018",
+                Semestr = "4"
+            });
+            list1.WypiszOsoby();
+            Console.WriteLine("-------");
+            list.PosortujOsobyPoNazwisku();
 
             Console.ReadLine();
 

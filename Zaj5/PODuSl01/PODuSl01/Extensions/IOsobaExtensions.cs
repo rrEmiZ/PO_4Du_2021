@@ -12,8 +12,24 @@ namespace PODuSl01.Extensions
         //    return $"{osoba.FirstName} {osoba.LastName}";
         //}
 
+        public static void WypiszOsoby(this List<IStudent> list)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                Console.WriteLine(list[i].WypiszPelnaNazweIUczelnie());
+            }
+        }
         public static void WypiszOsoby(this List<IOsoba> list)
         {
+            for (int i = 0; i < list.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {list[i].GetFullName()}");
+            }
+        }
+
+        public static void PosortujOsobyPoNazwisku(this List<IOsoba> list)
+        {
+            list.Sort((IOsoba x, IOsoba y) => string.Compare(x.LastName, y.LastName));
             for (int i = 0; i < list.Count; i++)
             {
                 Console.WriteLine($"{i + 1}. {list[i].GetFullName()}");
