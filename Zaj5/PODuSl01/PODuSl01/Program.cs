@@ -12,6 +12,7 @@ namespace PODuSl01
         static void Main(string[] args)
         {
             var list = new List<IOsoba>();
+            var Studenci = new List<StudentWSIiZ>();
 
 
             list.Add(new Osoba()
@@ -35,12 +36,39 @@ namespace PODuSl01
             });
 
             list.WypiszOsoby();
-
-            Console.ReadLine();
-
+           
+            Studenci.Add(new StudentWSIiZ()
+            {
+                FirstName = "John",
+                LastName = "Kowal",
+                Uczelnia = "UPD",
+                Kierunek = "Kowalstwo",
+                Rok = 2019,
+                Semestr = 2
+            });
+            Studenci.Add(new StudentWSIiZ()
+            {
+                FirstName = "Johnathan",
+                LastName = "Kribki",
+                Uczelnia = "USD",
+                Kierunek = "Zielarstwo",
+                Rok = 2021,
+                Semestr = 2
+            });
+            Studenci.Add(new StudentWSIiZ()
+            {
+                FirstName = "Matthew",
+                LastName = "Boss",
+                Uczelnia = "TSGOP",
+                Kierunek = "Programming",
+                Rok = 2023,
+                Semestr = 10
+            });
+            foreach (var Student in Studenci) 
+            {
+                Student.WypiszPelnaNazweIUczelnie();          
+            }
+            Console.ReadLine();           
         }
-
-
-
     }
 }

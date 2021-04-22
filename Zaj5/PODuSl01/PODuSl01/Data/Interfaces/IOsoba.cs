@@ -11,4 +11,5 @@ namespace PODuSl01.Data.Interfaces
 
         string GetFullName();
     }
+  
 }

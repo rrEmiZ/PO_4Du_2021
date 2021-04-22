@@ -19,6 +19,10 @@ namespace PODuSl01.Extensions
                 Console.WriteLine($"{i + 1}. {list[i].GetFullName()}");
             }
         }
+        public static void PosortujOsobyPoNazwisku(this List<IOsoba> list)
+        {
+            list.Sort((p,q) => p.LastName.CompareTo(q.LastName));
+        }
 
     }
 }
