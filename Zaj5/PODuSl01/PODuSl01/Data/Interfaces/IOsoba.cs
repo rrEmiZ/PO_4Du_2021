@@ -10,5 +10,6 @@ namespace PODuSl01.Data.Interfaces
         string LastName { get; set; }
 
         string GetFullName();
+
     }
 }

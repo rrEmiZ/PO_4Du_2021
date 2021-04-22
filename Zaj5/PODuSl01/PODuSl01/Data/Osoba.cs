@@ -12,7 +12,7 @@ namespace PODuSl01.Data
 
         public string GetFullName()
         {
-            return $"{FirstName} {LastName} - !!!!";
+            return $"{FirstName} {LastName} ";
         }
     }
 }
