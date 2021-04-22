@@ -17,7 +17,7 @@ namespace PODuSl01
             list.Add(new Osoba()
             {
                  FirstName = "Jan",
-                  LastName = "Kowalski"
+                  LastName = "Zareba"
             });
 
 
@@ -36,7 +36,32 @@ namespace PODuSl01
 
             list.WypiszOsoby();
 
+
+
+            list.Add(new StudentWSIiZ()
+            {
+                FirstName = "Janusz",
+                LastName = "Boniek",
+                Kierunek = "IID",
+                Rok = "2016",
+                Semestr = "8"
+            });
+
+            list.Add(new StudentWSIiZ()
+            {
+                FirstName = "Jarek",
+                LastName = "Bednarz",
+                Kierunek = "IID",
+                Rok = "2016",
+                Semestr = "7"
+            });
+
+            
+            list.PosortujOsobyPoNazwisku();
+            list.WypiszOsoby();
+
             Console.ReadLine();
+
 
         }
 
