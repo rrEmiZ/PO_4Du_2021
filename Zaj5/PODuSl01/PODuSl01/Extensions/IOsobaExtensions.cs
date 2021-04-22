@@ -20,5 +20,18 @@ namespace PODuSl01.Extensions
             }
         }
 
+        public static void WypiszOsoby(this List<IStudent> list)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                Console.WriteLine(list[i].WypiszPelnaNazweIUczelnie());
+            }
+        }
+
+        public static void PosortujOsobyPoNazwisku(this List<IOsoba> list)
+        {
+            list.Sort((a, b) => a.LastName.CompareTo(b.LastName));
+        }
+
     }
 }

@@ -36,6 +36,35 @@ namespace PODuSl01
 
             list.WypiszOsoby();
 
+            var list2 = new List<IStudent>();
+
+            list.Add(new Student()
+            {
+                FirstName = "Jan",
+                LastName = "Kowalski",
+                Uczelnia = " WSIZ",
+                Semestr = "4",
+                Rok = 2019
+            });
+
+            list.Add(new Student()
+            {
+                FirstName = "Janek",
+                LastName = "Kowal",
+                Uczelnia = " WSIZ",
+                Semestr = "3",
+                Rok = 2014
+            });
+
+            list.Add(new Student()
+            {
+                FirstName = "Janek",
+                LastName = "Nowak",
+                Uczelnia = " WSIZ",
+                Semestr = "2",
+                Rok = 2016
+            });
+
             Console.ReadLine();
 
         }
