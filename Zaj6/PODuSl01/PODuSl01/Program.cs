@@ -64,8 +64,21 @@ namespace PODuSl01
             //    sw.WriteLine(json);                
             //}
 
-            Console.ReadLine();
+            
 
+            // zad 1
+            var Zadanie1 = new Zad1();
+            Zadanie1.zapiszAlbum();
+            Zadanie1.WypiszAlbum();
+
+            // zad 2
+            var Zadanie2 = new Zad2();
+            Zadanie2.WypiszPlik("sample.txt");
+
+            // zad 3
+            var Zadanie3 = new Zad3();
+            Zadanie3.IleKobiet("pesels.txt");            
+            
         }
 
 
