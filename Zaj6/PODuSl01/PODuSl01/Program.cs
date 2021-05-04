@@ -36,6 +36,41 @@ namespace PODuSl01
         public string date { get; set; }
     }
 
+    public class FilesService
+    {
+        public static bool SaveData(string data, string fileName)
+        {
+            try
+            {
+                using (var sw = new StreamWriter(fileName))
+                {
+                    sw.WriteLine(data);
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static string ReadData(string fileName)
+        {
+            try
+            {
+                using (var sr = new StreamReader(fileName))
+                {
+                    return sr.ReadToEnd();
+                }
+            }
+            catch (Exception e)
+            {
+                return "Coś poszło nie tak";
+            }
+        }
+
+    }
+
 
     class Program
     {
@@ -66,15 +101,29 @@ namespace PODuSl01
             //}
 
             //------------------------
-            string studentNumber = getValidString("numer albumu", 6);
-            string fileName = getValidString("nazwę pliku", 1);
+            string studentNumber = GetValidString("numer albumu", 6);
+            string fileName = GetValidString("nazwę pliku", 1);
 
+            if (FilesService.SaveData(studentNumber, fileName))
+            {
+                Console.WriteLine("Dane zostały zapisane");
+            } else
+            {
+                Console.WriteLine("Coś poszło nie tak :(");
+            }
+
+
+            Console.WriteLine("WCZYTYWANIE DANYCH Z PLIKU:");
+            fileName = GetValidString("nazwę pliku", 1);
+            string fileContent = FilesService.ReadData(fileName);
+            Console.WriteLine("Zawartość pliku:");
+            Console.WriteLine(fileContent);
 
             Console.ReadLine();
 
         }
 
-        static string getValidString(string varName, uint numOfChars)
+        static string GetValidString(string varName, uint numOfChars)
         {
             string value;
             Console.WriteLine("Podaj {0}:", varName);
@@ -82,7 +131,7 @@ namespace PODuSl01
             while (true)
             {
                 value= Console.ReadLine().ToString();
-                if (value.Length >= numOfChars && Regex.IsMatch(value, "^[a-zA-Z0-9]*$"))
+                if (value.Length >= numOfChars)
                 {
                     return value;
                 }
