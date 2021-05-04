@@ -119,6 +119,25 @@ namespace PODuSl01
             Console.WriteLine("Zawartość pliku:");
             Console.WriteLine(fileContent);
 
+
+
+            Console.WriteLine("Liczba kobiet w pliku pesels.txt:");
+            string pesels = FilesService.ReadData("pesels.txt");
+            int femalesNum = 0;
+
+            using(var sr = new StringReader(pesels))
+            {
+                string pesel;
+                while ((pesel = sr.ReadLine()) != null)
+                {
+                    if (Int32.Parse(pesel[9].ToString()) % 2 == 0)
+                    {
+                        femalesNum += 1;
+                    }
+                }
+            }
+            Console.WriteLine($"Liczba kobiet w pliku wynosi: {femalesNum}");
+
             Console.ReadLine();
 
         }
