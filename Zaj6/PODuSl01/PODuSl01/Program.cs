@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
 namespace PODuSl01
@@ -64,10 +65,30 @@ namespace PODuSl01
             //    sw.WriteLine(json);                
             //}
 
+            //------------------------
+            string studentNumber = getValidString("numer albumu", 6);
+            string fileName = getValidString("nazwę pliku", 1);
+
+
             Console.ReadLine();
 
         }
 
+        static string getValidString(string varName, uint numOfChars)
+        {
+            string value;
+            Console.WriteLine("Podaj {0}:", varName);
+
+            while (true)
+            {
+                value= Console.ReadLine().ToString();
+                if (value.Length >= numOfChars && Regex.IsMatch(value, "^[a-zA-Z0-9]*$"))
+                {
+                    return value;
+                }
+                Console.WriteLine("Nieprawidłowa wartość. Podaj poprawne dane:");
+            }
+        }
 
 
     }
