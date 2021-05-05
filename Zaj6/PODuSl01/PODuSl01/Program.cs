@@ -6,13 +6,6 @@ using Newtonsoft.Json;
 
 namespace PODuSl01
 {
-    public class Fruit
-    {
-        [JsonProperty(PropertyName ="fruit")]
-        public string Type { get; set; }
-        public string Size { get; set; }
-        public string Color { get; set; }
-    }
 
     public class Indicator
     {
@@ -34,37 +27,150 @@ namespace PODuSl01
         public string @decimal { get; set; }
         public string date { get; set; }
     }
-
+ 
 
     class Program
     {
-        static void Main(string[] args)
+        public static void Zad1(string FileName)
+        {
+            
+            using (var sw = new StreamWriter(FileName))
+            {
+                sw.WriteLine("w61957");
+            }
+        }
+        public static string Zad2 (string Filename)
+        {
+            using (var sr = new StreamReader(Filename))
+            {
+                var line = sr.ReadToEnd();
+                return line;
+            }
+        }
+        public static void Zad3()
+        {
+            using (var sr = new StreamReader("pesels.txt"))
+            {
+                var line = sr.ReadLine();
+                int counter=0;
+                while (line != null)
+                {
+                    if ((int)line[9] % 2 == 0)
+                    {
+                        counter++;
+                    }
+                    line = sr.ReadLine();
+                }
+                Console.WriteLine("peselów należących do kobiet jest: " + counter);
+            } 
+        }
+        public static void Zad4(string from, string to, string country)
         {
             List<Root> list;
 
-            //Otwieramy stream pliku sample.txt
             using (var sr = new StreamReader("db.json"))
             {
                 var json = sr.ReadToEnd();
 
                 list = JsonConvert.DeserializeObject<List<Root>>(json);
             }
+            string firstPopulation="";
+            string secondPopulation="";
+            foreach(var info in list)
+            {
+                if (info.date == from && info.country.value == country)
+                {
+                    firstPopulation = info.value;
+                }
+                if (info.date == to && info.country.value == country)
+                {
+                    secondPopulation = info.value;
+                }
+            }
 
-            //sc.Add(new Fruit()
-            //{
-            //    Type = "Banana",
-            //    Color = "Yellow",
-            //    Size = "Medium"
-            //});
+            int result = Int32.Parse(secondPopulation) - Int32.Parse(firstPopulation);
+            Console.WriteLine("różnica populacji to: "+result);
+        }
+        public static void Zad4(string year, string country)
+        {
+            List<Root> list;
 
-            //using (var sw = new StreamWriter("sample.json"))
-            //{
-            //    var json = JsonConvert.SerializeObject(sc);
+            using (var sr = new StreamReader("db.json"))
+            {
+                var json = sr.ReadToEnd();
 
-            //    sw.WriteLine(json);                
-            //}
+                list = JsonConvert.DeserializeObject<List<Root>>(json);
+            }
+            string firstPopulation="";
+            string secondPopulation="";
+            int previousYear = Int32.Parse(year) - 1;
+            string previousYearString = previousYear.ToString();
+            foreach (var info in list)
+            {
+                if (info.date == previousYearString && info.country.value == country)
+                {
+                    firstPopulation = info.value;
+                }
+                if (info.date == year && info.country.value == country)
+                {
+                    secondPopulation = info.value;
+                }
+            }
 
-            Console.ReadLine();
+            Double result = (Double.Parse(secondPopulation) - Double.Parse(firstPopulation))/Double.Parse(firstPopulation);
+            result = Math.Round(result, 4);
+            Console.WriteLine("wzrost populacji wzgledem poprzedniego roku to: "+result+'%');
+
+        }
+        static void Main(string[] args)
+        {
+
+            Zad1("test.txt");
+            string test = Zad2("test.txt");
+            Console.WriteLine(test);
+            Zad3();
+            Zad4("1970", "2000", "India");
+            Zad4("1965", "2010", "United States");
+            Zad4("1980", "2018", "China");
+            Zad4("1980", "China");
+
+            Person p1 = new Person
+            {
+                Id = 1,
+                FirstName = "Roman",
+                LastName = "Kowalski",
+                Pesel = "99070103421"
+            };
+            Person p2 = new Person
+            {
+                Id = 2,
+                FirstName = "Julian",
+                LastName = "Kowalski",
+                Pesel = "99070103432"
+            };
+            Person p3 = new Person
+            {
+                Id = 3,
+                FirstName = "Adam",
+                LastName = "Kowalski",
+                Pesel = "99070103433"
+            };
+            Person p4 = new Person
+            {
+                Id = 3,
+                FirstName = "Adam",
+                LastName = "Kowalskitest",
+                Pesel = "99070103433"
+            };
+            FilePersonRepository testDB = new FilePersonRepository();
+            testDB.Add(p1);
+            testDB.Add(p2);
+            testDB.Add(p3);
+            Console.WriteLine(testDB.CountPersonOverYrs(1900));
+            testDB.Remove(3);
+            testDB.Update(p4);
+
+
 
         }
 
