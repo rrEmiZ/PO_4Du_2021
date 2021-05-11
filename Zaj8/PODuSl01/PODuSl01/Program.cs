@@ -12,6 +12,9 @@ namespace PODuSl01
     {
         public int Id { get; set; }
         public string NrAlbumu { get; set; }
+        public string Imie { get; set; }
+        public string Nazwisko { get; set; }
+        public string Grupa { get; set; }
     }
 
 
@@ -19,79 +22,109 @@ namespace PODuSl01
     {
         static void Main(string[] args)
         {
-            string connectionString = @"Data source=.\SQLExpress;database=programowanieOb;Trusted_Connection=True";
 
+            string connectionString = @"Data Source=LAPTOP-1TBJF8P6\SQLEXPRESS;Initial Catalog=programowanieOb;Integrated Security=True";
+            
             SqlConnection connection = new SqlConnection(connectionString);
             var students = new List<Student>();
-            try
+            
+            
+            void DodajStudenta(string Imie, string Nazwisko, string NrAlbumu, string Grupa)
             {
                 connection.Open();
 
-                //{
-                //    var cmd = connection.CreateCommand();
-                //    cmd.CommandType = CommandType.Text;
-                //    cmd.CommandText = @"INSERT INTO [dbo].[students]
-                //                               ([Nazwisko]
-                //                               ,[Imie]
-                //                               ,[NrAlbumu]
-                //                               ,[Grupa])
-                //                         VALUES
-                //                               (@nazwisko
-                //                               ,@imie
-                //                               ,@nrAlb
-                //                               ,@grp)";
-
-                //    cmd.Parameters.AddWithValue("@nazwisko", "Kowalsky");
-                //    cmd.Parameters.AddWithValue("@imie", "John");
-                //    cmd.Parameters.AddWithValue("@nrAlb", "w666666");
-                //    cmd.Parameters.AddWithValue("@grp", "IID-Du");
-
-                //    int result = cmd.ExecuteNonQuery();
-                //}
-
+                if (students.Exists(student => student.NrAlbumu.Trim(' ') == NrAlbumu))
                 {
-                    SqlCommand sqlCommand = new SqlCommand();
-                    sqlCommand.Connection = connection;
-                    sqlCommand.CommandText = "SELECT NrAlbumu, Id FROM students";// WHERE Id = @param1" ;
-                                                                      // sqlCommand.Parameters.Add(new SqlParameter("@param1", 2));
+                    throw new ExistingStudentException($"Student o numerze albumu:{NrAlbumu} jest już w bazie.");
+                }
+                else
+                {
+                    var cmd = connection.CreateCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = @"INSERT INTO [dbo].[students]
+                                                              ([Nazwisko],[Imie],[NrAlbumu],[Grupa]) VALUES 
+                                                               (@nazwisko, @imie, @nrAlbumu,@grupa)";
+
+                    cmd.Parameters.AddWithValue("@nazwisko", Nazwisko);
+                    cmd.Parameters.AddWithValue("@imie", Imie);
+                    cmd.Parameters.AddWithValue("@nrAlbumu", NrAlbumu);
+                    cmd.Parameters.AddWithValue("@grupa", Grupa);
+
+                    int result = cmd.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+
+            void ZaktualizujStudenta(int Id, string Imie, string Nazwisko, string NrAlbumu, string Grupa)
+            {
+                connection.Open();
+
+                    var cmd = connection.CreateCommand();
+                    cmd.CommandType = CommandType.Text;
+                cmd.CommandText = @"UPDATE students set Imie=@imie, Nazwisko=@nazwisko, NrAlbumu=@nrAlbumu, Grupa=@grupa WHERE Id=@id";
+                    cmd.Parameters.AddWithValue("@nazwisko", Nazwisko);
+                    cmd.Parameters.AddWithValue("@imie", Imie);
+                    cmd.Parameters.AddWithValue("@nrAlbumu", NrAlbumu);
+                    cmd.Parameters.AddWithValue("@grupa", Grupa);
+                    cmd.Parameters.AddWithValue("@id", Id);
+
+                    int result = cmd.ExecuteNonQuery();
+                
+                connection.Close();
+            }
+
+            void UsunStudenta(string NrAlbumu)
+            {
+                connection.Open();
 
 
-                    using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                var cmd = connection.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = @"DELETE FROM students WHERE NrAlbumu=@nrAlbumu";
+                cmd.Parameters.AddWithValue("@nrAlbumu", NrAlbumu);
+
+                int result = cmd.ExecuteNonQuery();
+
+                connection.Close();
+            }
+
+            void FetchStudents()
+            {
+                connection.Open();
+                SqlCommand sqlCommand = new SqlCommand
+                {
+                    Connection = connection,
+                    CommandText = "SELECT NrAlbumu, Id, Imie, Nazwisko, Grupa FROM students"
+                };
+
+                using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                {
+                    while(reader.Read())
                     {
-                        //Console.WriteLine("Wiersze znajdujące się w tabeli students:");
-
-                        while (reader.Read())
+                        students.Add(new Student()
                         {
-                            students.Add(new Student()
-                            {
-                                Id = (int)reader["Id"],
-                                NrAlbumu = reader["NrAlbumu"].ToString()
-                            });
-
-                           // Console.WriteLine(
-                           //     reader[0].ToString() + " " +
-                           //     reader["Nazwisko"].ToString() + " " +
-                           //reader["Imie"].ToString() + " " +
-                           //reader["NrAlbumu"].ToString() + " " +
-                           //reader["Grupa"].ToString());
-                        }
+                            Id = (int)reader["Id"],
+                            Imie = reader["Imie"].ToString(),
+                            NrAlbumu=reader["NrAlbumu"].ToString(),
+                            Nazwisko = reader["Nazwisko"].ToString(),
+                            Grupa=reader["Grupa"].ToString(),
+                        }) ;
                     }
                 }
-            }
-            catch (SqlException e)
-            {
-                Console.WriteLine("error");
-                Console.WriteLine(e.Message);
-            }
-            finally
-            {
                 connection.Close();
-
             }
 
+           FetchStudents();
+
+           DodajStudenta("Paweł", "Misiewicz", "w62252", "4IIDP-Du");
+           //ZaktualizujStudenta(6, "Paweł", "Misiewicz", "w62230", "4IIDP-Du");
+           //UsunStudenta("w62230");
+
+            
+            
             foreach (var student in students)
             {
-                Console.WriteLine($"{student.Id} - {student.NrAlbumu}");
+               Console.WriteLine($"{student.Id} - {student.NrAlbumu}");
             }
 
 
@@ -100,10 +133,13 @@ namespace PODuSl01
         }
 
 
-
-
-
-
     }
 
+    public class ExistingStudentException : Exception
+    {
+        public ExistingStudentException(string message) : base(message)
+        {
+
+        }
+    }
 }
