@@ -8,58 +8,25 @@ using System.Data;
 
 namespace PODuSl01
 {
-    public class Student
-    {
-        public int Id { get; set; }
-        public string NrAlbumu { get; set; }
-    }
 
 
     class Program
     {
         static void Main(string[] args)
         {
-            string connectionString = @"Data source=.\SQLExpress;database=programowanieOb;Trusted_Connection=True";
+            string connectionString = @"Data Source=DESKTOP-RBA97HA\SQLEXPRESS;Initial Catalog=programowanieOb;Integrated Security=True";
 
             SqlConnection connection = new SqlConnection(connectionString);
             var students = new List<Student>();
             try
             {
                 connection.Open();
-
-                //{
-                //    var cmd = connection.CreateCommand();
-                //    cmd.CommandType = CommandType.Text;
-                //    cmd.CommandText = @"INSERT INTO [dbo].[students]
-                //                               ([Nazwisko]
-                //                               ,[Imie]
-                //                               ,[NrAlbumu]
-                //                               ,[Grupa])
-                //                         VALUES
-                //                               (@nazwisko
-                //                               ,@imie
-                //                               ,@nrAlb
-                //                               ,@grp)";
-
-                //    cmd.Parameters.AddWithValue("@nazwisko", "Kowalsky");
-                //    cmd.Parameters.AddWithValue("@imie", "John");
-                //    cmd.Parameters.AddWithValue("@nrAlb", "w666666");
-                //    cmd.Parameters.AddWithValue("@grp", "IID-Du");
-
-                //    int result = cmd.ExecuteNonQuery();
-                //}
-
                 {
                     SqlCommand sqlCommand = new SqlCommand();
                     sqlCommand.Connection = connection;
-                    sqlCommand.CommandText = "SELECT NrAlbumu, Id FROM students";// WHERE Id = @param1" ;
-                                                                      // sqlCommand.Parameters.Add(new SqlParameter("@param1", 2));
-
-
+                    sqlCommand.CommandText = "SELECT NrAlbumu, Id FROM students";
                     using (SqlDataReader reader = sqlCommand.ExecuteReader())
                     {
-                        //Console.WriteLine("Wiersze znajdujące się w tabeli students:");
-
                         while (reader.Read())
                         {
                             students.Add(new Student()
@@ -67,13 +34,6 @@ namespace PODuSl01
                                 Id = (int)reader["Id"],
                                 NrAlbumu = reader["NrAlbumu"].ToString()
                             });
-
-                           // Console.WriteLine(
-                           //     reader[0].ToString() + " " +
-                           //     reader["Nazwisko"].ToString() + " " +
-                           //reader["Imie"].ToString() + " " +
-                           //reader["NrAlbumu"].ToString() + " " +
-                           //reader["Grupa"].ToString());
                         }
                     }
                 }
@@ -86,7 +46,6 @@ namespace PODuSl01
             finally
             {
                 connection.Close();
-
             }
 
             foreach (var student in students)
@@ -94,6 +53,11 @@ namespace PODuSl01
                 Console.WriteLine($"{student.Id} - {student.NrAlbumu}");
             }
 
+            var studentTest = new Student();
+           // studentTest.createStudent("Radosław", "Micał", "w61957", "4IIDPdu");
+           // studentTest.createStudent("Radosław", "Micał", "w61957", "4IIDPdu");
+           // studentTest.updateStudent(11,"Radosław222", "Micał", "w61957", "4IIDPdu");
+            studentTest.deleteStudent("w61957");
 
             Console.ReadLine();
 
