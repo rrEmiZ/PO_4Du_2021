@@ -7,6 +7,9 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Text;
 using System.Linq;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using NPOI.HSSF.UserModel;
 
 namespace PODuSl01
 {
@@ -14,9 +17,9 @@ namespace PODuSl01
     {
         public int Id { get; set; }
         public string NrAlbumu { get; set; }
-        public string Imie { get;  set; }
-        public string Nazwisko { get;  set; }
-        public string Grupa { get;  set; }
+        public string Imie { get; set; }
+        public string Nazwisko { get; set; }
+        public string Grupa { get; set; }
     }
 
 
@@ -26,56 +29,125 @@ namespace PODuSl01
         {
             var students = GetStudents();
 
-            StringBuilder sb = new StringBuilder();      
 
-            sb.AppendLine("Id,Nazwisko,Imie,Grupa");
-            foreach (var item in students)
-            {
-                sb.AppendLine($"{item.Id},{item.Nazwisko},{item.Imie},{item.NrAlbumu}");
-            }
+             Export(students);
 
-            using (var sw = new StreamWriter("students.csv"))
-            {
-                sw.Write(sb.ToString());
-            }
+            //var studentsImported = Import();
 
-
-            var listImported = new List<Student>();
-
-            using (var sr = new StreamReader("students.csv"))
-            {
-                var line = sr.ReadLine();
-                var hdSplitted = line.Split(',').ToList();
-                int idxNazw = hdSplitted.IndexOf("Nazwisko");
-                int idxImie = hdSplitted.IndexOf("Imie");
-                int idxGrp = hdSplitted.IndexOf("Grupa");
-                int idxId = hdSplitted.IndexOf("Id");
-
-                line = sr.ReadLine();
-
-                while (line != null)
-                {
-                    var splited = line.Split(',');
-
-                    listImported.Add(new Student()
-                    {
-                        Imie = splited[idxImie],
-                         Nazwisko = splited[idxNazw],
-                         Grupa = splited[idxGrp],
-                          Id= Convert.ToInt32(splited[idxId])
-                    });
-
-                    line = sr.ReadLine();
-                }
-
-            }
-
-            
 
             Console.ReadLine();
 
         }
 
+        private static List<Student> Import()
+        {
+            var students = new List<Student>();
+            try
+            {
+                using (FileStream stream = new FileStream("test.xlsx", FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    bool useXlsx = true;
+                    IWorkbook workbook;
+                    if (useXlsx)
+                        workbook = new XSSFWorkbook(stream);
+                    else
+                        workbook = new HSSFWorkbook(stream);
+
+                    ISheet sheet = workbook.GetSheet("Ark1");
+                    for (int row = 1; row <= sheet.LastRowNum; row++)
+                    {
+                        var rowObj = sheet.GetRow(row);
+                        if (rowObj != null) //null w przypadku gdy wiersz zawiera      tylko puste komórki
+                        {
+                            students.Add(new Student()
+                            {
+                                Id = Convert.ToInt32(rowObj.GetCell(0).NumericCellValue),
+                                Imie = rowObj.GetCell(1).StringCellValue
+                            });
+
+
+                        }
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return students;
+        }
+
+        static void Export(List<Student> students)
+        {
+            bool useXlsx = false;
+            IWorkbook workbook;
+            if (useXlsx)
+                workbook = new XSSFWorkbook();
+            else
+                workbook = new HSSFWorkbook();
+
+
+
+            var sheet = workbook.CreateSheet("Ark1");
+
+            int rowIdx = 0;
+            {
+                var rowHf = sheet.CreateRow(rowIdx);
+                int colIdx = 0;
+                {
+                    var cellHd = rowHf.CreateCell(colIdx++);
+                    cellHd.SetCellValue("Id");
+                }
+                {
+                    var cellHd = rowHf.CreateCell(colIdx++);
+                    cellHd.SetCellValue("Imie");
+                }
+                {
+                    var cellHd = rowHf.CreateCell(colIdx++);
+                    cellHd.SetCellValue("Nazwisko");
+                }
+                {
+                    var cellHd = rowHf.CreateCell(colIdx++);
+                    cellHd.SetCellValue("Grupa");
+                }
+            }
+            rowIdx++;
+
+            foreach (var student in students)
+            {
+                var row = sheet.CreateRow(rowIdx);
+                int colIdx = 0;
+
+                {
+                    var cell = row.CreateCell(colIdx++);
+                    cell.SetCellValue(student.Id);
+                }
+
+                {
+                    var cell = row.CreateCell(colIdx++);
+                    cell.SetCellValue(student.Imie);
+                }
+
+                {
+                    var cell = row.CreateCell(colIdx++);
+                    cell.SetCellValue(student.Nazwisko);
+                }
+
+                {
+                    var cell = row.CreateCell(colIdx++);
+                    cell.SetCellValue(student.Grupa);
+                }
+
+                rowIdx++;
+            }
+
+            using (FileStream stream = new FileStream("test.xls", FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            {
+                workbook.Write(stream);
+            }
+        }
 
 
         static List<Student> GetStudents()
@@ -114,7 +186,7 @@ namespace PODuSl01
                     SqlCommand sqlCommand = new SqlCommand();
                     sqlCommand.Connection = connection;
                     sqlCommand.CommandText = "SELECT * FROM students";// WHERE Id = @param1" ;
-                                                                                 // sqlCommand.Parameters.Add(new SqlParameter("@param1", 2));
+                                                                      // sqlCommand.Parameters.Add(new SqlParameter("@param1", 2));
 
 
                     using (SqlDataReader reader = sqlCommand.ExecuteReader())
