@@ -8,92 +8,43 @@ using System.Data;
 
 namespace PODuSl01
 {
-    public class Student
-    {
-        public int Id { get; set; }
-        public string NrAlbumu { get; set; }
-    }
-
+    
 
     class Program
     {
         static void Main(string[] args)
         {
-            string connectionString = @"Data source=.\SQLExpress;database=programowanieOb;Trusted_Connection=True";
+            Student Studenciak = new Student();
 
-            SqlConnection connection = new SqlConnection(connectionString);
-            var students = new List<Student>();
             try
             {
-                connection.Open();
+                Studenciak.AddStudent("a", "b", "w61903", "IID-P-Du");
 
-                //{
-                //    var cmd = connection.CreateCommand();
-                //    cmd.CommandType = CommandType.Text;
-                //    cmd.CommandText = @"INSERT INTO [dbo].[students]
-                //                               ([Nazwisko]
-                //                               ,[Imie]
-                //                               ,[NrAlbumu]
-                //                               ,[Grupa])
-                //                         VALUES
-                //                               (@nazwisko
-                //                               ,@imie
-                //                               ,@nrAlb
-                //                               ,@grp)";
-
-                //    cmd.Parameters.AddWithValue("@nazwisko", "Kowalsky");
-                //    cmd.Parameters.AddWithValue("@imie", "John");
-                //    cmd.Parameters.AddWithValue("@nrAlb", "w666666");
-                //    cmd.Parameters.AddWithValue("@grp", "IID-Du");
-
-                //    int result = cmd.ExecuteNonQuery();
-                //}
-
-                {
-                    SqlCommand sqlCommand = new SqlCommand();
-                    sqlCommand.Connection = connection;
-                    sqlCommand.CommandText = "SELECT NrAlbumu, Id FROM students";// WHERE Id = @param1" ;
-                                                                      // sqlCommand.Parameters.Add(new SqlParameter("@param1", 2));
-
-
-                    using (SqlDataReader reader = sqlCommand.ExecuteReader())
-                    {
-                        //Console.WriteLine("Wiersze znajdujące się w tabeli students:");
-
-                        while (reader.Read())
-                        {
-                            students.Add(new Student()
-                            {
-                                Id = (int)reader["Id"],
-                                NrAlbumu = reader["NrAlbumu"].ToString()
-                            });
-
-                           // Console.WriteLine(
-                           //     reader[0].ToString() + " " +
-                           //     reader["Nazwisko"].ToString() + " " +
-                           //reader["Imie"].ToString() + " " +
-                           //reader["NrAlbumu"].ToString() + " " +
-                           //reader["Grupa"].ToString());
-                        }
-                    }
-                }
             }
-            catch (SqlException e)
+            catch (ExistingStudentExeption e)
             {
-                Console.WriteLine("error");
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e);
             }
-            finally
+            try
             {
-                connection.Close();
-
+                Studenciak.UpdateStudent(7, "Kamil", "Ślimak", "w61902", "WSRH");
             }
-
-            foreach (var student in students)
+            catch (ExistingStudentExeption e)
             {
-                Console.WriteLine($"{student.Id} - {student.NrAlbumu}");
+                Console.WriteLine(e);
             }
+            try
+            {
+                Studenciak.AddStudent("f", "g", "w655555", "Idadddu");
 
+            }
+            catch (ExistingStudentExeption e)
+            {
+                Console.WriteLine(e);
+            }
+            Studenciak.WypiszStudentow();
+            //Studenciak.DeleteStudent(8);
+            //Studenciak.WypiszStudentow();
 
             Console.ReadLine();
 
