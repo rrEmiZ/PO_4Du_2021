@@ -74,7 +74,13 @@
     <Compile Include="customer.cs">
       <DependentUpon>BikeStoresDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Dto\ManagerDto.cs" />
+    <Compile Include="Dto\OrderDto.cs" />
+    <Compile Include="Dto\OrderProductDto.cs" />
     <Compile Include="Dto\ProductDto.cs" />
+    <Compile Include="Dto\ProductStatsDto.cs" />
+    <Compile Include="Dto\SellOrderDto.cs" />
+    <Compile Include="Dto\StaffDto.cs" />
     <Compile Include="order.cs">
       <DependentUpon>BikeStoresDataModel.tt</DependentUpon>
     </Compile>
@@ -108,19 +114,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="BikeStoresDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BikeStoresDataModel.Context.cs</LastGenOutput>
       <DependentUpon>BikeStoresDataModel.edmx</DependentUpon>
+      <LastGenOutput>BikeStoresDataModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="BikeStoresDataModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BikeStoresDataModel.edmx</DependentUpon>
       <LastGenOutput>BikeStoresDataModel.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

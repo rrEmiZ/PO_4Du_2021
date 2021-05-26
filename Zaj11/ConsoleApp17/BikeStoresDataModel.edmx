@@ -585,7 +585,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BikeStoresEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="BikeStoresEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="brands" EntityType="Self.brand" />
           <EntitySet Name="categories" EntityType="Self.category" />
           <EntitySet Name="products" EntityType="Self.product" />
@@ -645,7 +645,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="BikeStoresModelStoreContainer" CdmEntityContainer="BikeStoresEntities">
+        <EntityContainerMapping StorageEntityContainer="BikeStoresModelStoreContainer" CdmEntityContainer="BikeStoresEntities1">
           <EntitySetMapping Name="brands">
             <EntityTypeMapping TypeName="BikeStoresModel.brand">
               <MappingFragment StoreEntitySet="brands">
