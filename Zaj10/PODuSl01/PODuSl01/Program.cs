@@ -38,9 +38,6 @@ namespace PODuSl01
             var exQ = studs.Where(s => s.Imie != "Jan" && s.Nazwisko != "test").Max(x => x.Id);
 
 
-            //var studentsImported = Import();
-
-
             Console.ReadLine();
 
         }

@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\repo\PO_4Du_2021\Zaj11\ConsoleApp17\BikeStoresDataModel.edmx'. 
+﻿// T4 code generation is enabled for model 'G:\Laboratoria_Programowanie\Zaj11\ConsoleApp17\BikeStoresDataModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
