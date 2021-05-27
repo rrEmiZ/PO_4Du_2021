@@ -14,5 +14,7 @@ namespace ConsoleApp17.Dto
         public int BrandId { get;  set; }
         public string CategoryName { get;  set; }
         public int CategoryId { get;  set; }
+        public short ModelYear { get; internal set; }
+        public decimal ListPrice { get; internal set; }
     }
 }
