@@ -1,0 +1,38 @@
+[
+  {
+    "Manufacturer": "BMW",
+    "Model": "M3",
+    "Manufactured": 2015,
+    "EngineCapacity": 3996,
+    "Power": 420,
+    "Type": "Sedan",
+    "LicensePlate": "K0 LOSXD"
+  },
+  {
+    "Manufacturer": "Audi",
+    "Model": "A2",
+    "Manufactured": 1992,
+    "EngineCapacity": 1996,
+    "Power": 50.2,
+    "Type": "Hatchback",
+    "LicensePlate": "R3 H3H3XD"
+  },
+  {
+    "Manufacturer": "Audi",
+    "Model": "RS3",
+    "Manufactured": 2018,
+    "EngineCapacity": 2499,
+    "Power": 400.92,
+    "Type": "Hatchback",
+    "LicensePlate": "R2 WS1Z"
+  },
+  {
+    "Manufacturer": "BMW",
+    "Model": "328i",
+    "Manufactured": 2014,
+    "EngineCapacity": 1998,
+    "Power": 240,
+    "Type": "Kombi",
+    "LicensePlate": "T0 AUTOKAR"
+  }
+]
